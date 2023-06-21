@@ -7,18 +7,29 @@ on:
 
 jobs:
   deploy:
+    name: deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read # to fetch code (actions/checkout)
+      deployments: write # to delete deployments
+      pull-requests: write # to remove labels
+      statuses: write # to create commit status
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - uses: actions/checkout@v2
+      - uses: pullpreview/action@v5
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          always_on: master
+          cidrs: "0.0.0.0/0"
+          default_port: 80
+          instance_type: nano_2_0
+          # Ports to open on the server
+          ports: 80,5432
+        env:
+          AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          AWS_REGION: "us-east-1"
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
@@ -34,5 +45,4 @@ jobs:
           terraform plan -out=tfplan
           echo "::set-output name=tf_plan_path::tfplan"
 
-      - name: Terraform Apply
-        run: terraform apply ${{ steps.tf_plan.outputs.tf_plan_path }}
+     
