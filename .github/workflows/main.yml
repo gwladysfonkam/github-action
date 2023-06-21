@@ -29,12 +29,10 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        id: plan
-        run: terraform plan -out=tfplan
-        env:
-          TF_IN_AUTOMATION: true
+        id: tf_plan
+        run: |
+          terraform plan -out=tfplan
+          echo "::set-output name=tf_plan_path::tfplan"
 
       - name: Terraform Apply
-        run: terraform apply tfplan -auto-approve
-        env:
-          TF_IN_AUTOMATION: true
+        run: terraform apply ${{ steps.tf_plan.outputs.tf_plan_path }}
