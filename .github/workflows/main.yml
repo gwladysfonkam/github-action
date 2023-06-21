@@ -40,9 +40,6 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        id: tf_plan
-        run: |
-          terraform plan -out=tfplan
-          echo "::set-output name=tf_plan_path::tfplan"
-
-     
+        run: 
+          terraform plan 
+      
