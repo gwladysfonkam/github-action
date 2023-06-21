@@ -40,8 +40,10 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
+        run: terraform plan -input=false
+
+      - name: Set Terraform CLI Config File
         run: |
-          terraform plan -input=false
-          shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-          env:
-            TERRAFORM_CLI_CONFIG_FILE: /home/runner/work/_temp/ca295368-d47a-4396-a6b1-3fec2c6bfa69/terraform-bin
+          echo "::set-env name=TERRAFORM_CLI_CONFIG_FILE::/home/runner/work/_temp/ca295368-d47a-4396-a6b1-3fec2c6bfa69/terraform-bin"
+        shell: bash
+
