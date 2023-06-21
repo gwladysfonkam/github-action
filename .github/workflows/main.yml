@@ -45,5 +45,5 @@ jobs:
       - name: Set Terraform CLI Config File
         run: |
           echo "::set-env name=TERRAFORM_CLI_CONFIG_FILE::/home/runner/work/_temp/ca295368-d47a-4396-a6b1-3fec2c6bfa69/terraform-bin"
-        shell: bash
+          shell: bash
 
