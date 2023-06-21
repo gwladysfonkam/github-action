@@ -25,10 +25,10 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -input=false
-        working-directory: terraform/
+        working-directory: "./github-action"
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'push'
         run: terraform plan -no-color
-        working-directory: terraform/
+        working-directory: "./github-action"
