@@ -3,7 +3,7 @@ name: "terraform-deploy"
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
